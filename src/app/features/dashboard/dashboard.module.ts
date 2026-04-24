@@ -14,11 +14,13 @@ import { MatCardModule } from '@angular/material/card';
 import { AddExpenseModalComponent } from './add-expense-modal/add-expense-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { AiSummaryModalComponent } from './ai-summary-modal/ai-summary-modal.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    AddExpenseModalComponent
+    AddExpenseModalComponent,
+    AiSummaryModalComponent
   ],
   imports: [
     CommonModule,

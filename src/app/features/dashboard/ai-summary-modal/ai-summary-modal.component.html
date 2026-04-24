@@ -1,0 +1,20 @@
+<div class="ai-chat-container">
+  <div class="chat-header">
+    <h3>✨ AI Summary</h3>
+    <button class="close-btn" (click)="closeDialog()">✖</button>
+  </div>
+
+  <div class="chat-messages" #scrollMe>
+    <div *ngFor="let msg of messages" [ngClass]="msg.role === 'user' ? 'user-msg' : 'ai-msg'">
+      <p>{{ msg.text }}</p>
+    </div>
+    <div *ngIf="loading" class="ai-msg">
+      <p>⏳ Thinking...</p>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input [(ngModel)]="userMessage" placeholder="Ask about your expenses..." (keyup.enter)="sendMessage()"/>
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>

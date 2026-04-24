@@ -279,6 +279,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SocketService } from 'src/app/core/services/socket.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { AiSummaryModalComponent } from '../ai-summary-modal/ai-summary-modal.component';
 
 Chart.register(...registerables);
 
@@ -579,5 +580,16 @@ dialogRef.afterClosed().subscribe(result => {
         }
       });
     }, 500); // ✅ wait for data
+  }
+
+
+  // ================= AI SUMMARY =================
+  openAiSummary() {
+    this.dialog.open(AiSummaryModalComponent, {
+      width: '50vw',
+      height: '70vh',
+      panelClass: 'custom-dialog',
+      disableClose: false
+    });
   }
 }

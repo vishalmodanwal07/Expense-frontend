@@ -46,4 +46,12 @@ export class BudgetService {
   sortExpense(sort:  any){
     return this.http.get(`${this.baseUrlExpense}?${sort}`)
   }
+
+// getAiSummary(message: string) {
+//   return this.http.post(`${this.baseUrl}/ai-summary`, { message });
+// }
+
+getAiSummary(message: string) {
+  return this.http.post(`${environment.apiUrl}/summary`, { message });
+}
 }
