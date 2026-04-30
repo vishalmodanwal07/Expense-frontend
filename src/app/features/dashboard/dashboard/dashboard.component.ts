@@ -280,7 +280,8 @@ import { SocketService } from 'src/app/core/services/socket.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AiSummaryModalComponent } from '../ai-summary-modal/ai-summary-modal.component';
-
+import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
 Chart.register(...registerables);
 
 @Component({
@@ -294,7 +295,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private budget: BudgetService,
     private user: AuthService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   userName = "";
@@ -360,31 +363,59 @@ tableDataSource = new MatTableDataSource<any>([]);
   }
 
   // ================= TABLE =================
-getTableData() {
-  let sort : any = "";
+// getTableData() {
+//   let sort : any = "";
 
-  if (this.selectedSort === 'latest') {
-    sort = "latest";
-  } else if (this.selectedSort === 'high') {
-    sort = "high";
-  } else if (this.selectedSort === 'low') {
-    sort = "low";
-  }
+//   if (this.selectedSort === 'latest') {
+//     sort = "latest";
+//   } else if (this.selectedSort === 'high') {
+//     sort = "high";
+//   } else if (this.selectedSort === 'low') {
+//     sort = "low";
+//   }
 
-  this.budget.getAllExpense(sort).subscribe({
-    // next: (res: any) => {
-    //   this.tableDataSource = res.data;
-    // },
+//   this.budget.getAllExpense(sort).subscribe({
+//     // next: (res: any) => {
+//     //   this.tableDataSource = res.data;
+//     // },
 
-next: (res: any) => {
+// next: (res: any) => {
+//       this.tableDataSource = new MatTableDataSource(res.data);
+//       this.tableDataSource.paginator = this.paginator;
+//     },
+
+
+//     error: (err) => console.error(err)
+//   });
+// }
+
+totalRecords = 0;
+
+getTableData(page: number = 1) {
+  let sort: any = "";
+
+  if (this.selectedSort === 'latest') sort = "latest";
+  else if (this.selectedSort === 'high') sort = "high";
+  else if (this.selectedSort === 'low') sort = "low";
+
+  this.budget.getAllExpense(sort, page, 5).subscribe({
+    next: (res: any) => {
       this.tableDataSource = new MatTableDataSource(res.data);
-      this.tableDataSource.paginator = this.paginator;
+      this.totalRecords = res.total;
     },
-
-
     error: (err) => console.error(err)
   });
 }
+
+// onPageChange(event: any) {
+//   this.getTableData(event.pageIndex + 1);
+// }
+
+onPageChange(event: any) {
+  const page = event.pageIndex + 1;
+  this.router.navigate(['/dashboard/page', page]);
+}
+
 applySort(type: string) {
   this.selectedSort = type;
   this.getTableData(); // reload data with new sort
@@ -540,7 +571,12 @@ dialogRef.afterClosed().subscribe(result => {
 
   // ================= INIT =================
   ngOnInit(): void {
-    this.applySort(this.selectedSort);
+     this.route.params.subscribe(params => {
+    const page = Number(params['page']) || 1;
+     this.selectedSort = 'latest';
+    this.getTableData(page);
+  });
+    //this.applySort(this.selectedSort);
     this.getUserdetails();
     this.getCurrentBudget();
     this.getCurrentExpense();

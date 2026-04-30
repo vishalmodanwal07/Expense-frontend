@@ -15,6 +15,12 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   {path: '' , component: LandingComponent},
+// { path: 'dashboard/page/:page', component: DashboardComponent },
+{ 
+  path: 'dashboard/page/:page', 
+  component: DashboardComponent,
+  canActivate: [AuthGuard]
+},
 
   // 🔐 Protected Route
   {
