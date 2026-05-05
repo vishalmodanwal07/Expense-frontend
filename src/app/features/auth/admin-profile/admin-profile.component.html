@@ -1,0 +1,25 @@
+<section class="admin-profile-wrap">
+  <div class="admin-profile-card" *ngIf="!loading">
+    <p class="eyebrow">Administrator</p>
+    <h1>Admin profile</h1>
+    <p class="lead">Signed in as {{ nameDisplay || 'Admin' }}</p>
+
+    <dl class="details">
+      <div>
+        <dt>Email</dt>
+        <dd>{{ emailDisplay || '—' }}</dd>
+      </div>
+      <div>
+        <dt>Mobile</dt>
+        <dd>{{ mobileDisplay || '—' }}</dd>
+      </div>
+    </dl>
+
+    <div class="actions">
+      <button type="button" class="btn primary" (click)="goDashboard()">Open dashboard</button>
+      <button type="button" class="btn ghost" (click)="editProfile()">Edit account</button>
+    </div>
+  </div>
+
+  <p *ngIf="loading" class="loading-msg">Loading…</p>
+</section>

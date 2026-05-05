@@ -1,12 +1,19 @@
-<div class="dashboard">
+<div class="dashboard dashboard-page">
 
-  <!-- GREETING -->
-  <div class="greet">
-    <h2 id="name">Hi , <span style="color: rgb(56, 233, 56);" >{{userName}}</span> 👋</h2>
-  </div>
+  <header class="dashboard-hero">
+    <div class="greet">
+      <div class="title-wrap">
+        <h2 id="name">Good day, <span>{{userName}}</span></h2>
+        <p class="subtitle">Monitor spending, stay within budget, and act on clear numbers.</p>
+      </div>
+      <div class="summary-pill" aria-live="polite">
+        <span class="pill-label">Remaining</span>
+        <strong class="pill-value">₹{{ remainsBudget | number:'1.0-0' }}</strong>
+      </div>
+    </div>
+  </header>
 
-  <!-- CARDS -->
-<div class="cards">
+  <section class="stat-cards cards" aria-label="Budget summary">
 
   <mat-card class="card budget">
     <div class="card-left">
@@ -14,14 +21,13 @@
         <mat-icon>account_balance_wallet</mat-icon>
       </div>
       <div class="text">
-        <h3>Budget</h3>
-       <!---- <p>{{ tableDataSource.Data.length }} Transactions</p> -->
-       <p>{{ tableDataSource.data.length }} Transactions</p>
+        <h3>Monthly budget</h3>
+        <p>Planned limit</p>
       </div>
     </div>
 
     <div class="card-right">
-      ₹{{ userBudget }}
+      ₹{{ userBudget | number:'1.0-0' }}
     </div>
   </mat-card>
 
@@ -31,13 +37,13 @@
         <mat-icon>trending_down</mat-icon>
       </div>
       <div class="text">
-        <h3>Expense</h3>
-        <p>Total spent</p>
+        <h3>Total expense</h3>
+        <p>All recorded spend</p>
       </div>
     </div>
 
     <div class="card-right">
-      ₹{{ userExpense }}
+      ₹{{ userExpense | number:'1.0-0' }}
     </div>
   </mat-card>
 
@@ -47,63 +53,96 @@
         <mat-icon>savings</mat-icon>
       </div>
       <div class="text">
-        <h3>Remaining</h3>
-        <p>Available balance</p>
+        <h3>Available</h3>
+        <p>Budget minus spend</p>
       </div>
     </div>
 
     <div class="card-right">
-      ₹{{remainsBudget}}
+      ₹{{ remainsBudget | number:'1.0-0' }}
     </div>
   </mat-card>
 
-</div>
+  </section>
 
-<div id="beforeMain">
-       <button mat-raised-button color="primary" (click)="openAddExpense()">
-  ➕ Add Expense
- </button>
- 
+<div class="toolbar-panel">
+  <div class="toolbar-pair">
+    <button mat-raised-button color="primary" class="action-btn add-btn" (click)="openAddExpense()">
+      <mat-icon>add</mat-icon>
+      Add Expense
+    </button>
 
- <div class="sort-wrapper">
+    
+    <div class="sort-wrapper">
+      <button mat-button [matMenuTriggerFor]="sortMenu" class="sort-btn action-btn">
+        <mat-icon>tune</mat-icon>
+        {{ getSortLabel() }}
+        <mat-icon class="arrow">expand_more</mat-icon>
+      </button>
 
-  <button mat-button [matMenuTriggerFor]="sortMenu" class="sort-btn">
-    <mat-icon>tune</mat-icon>
-    {{ getSortLabel() }}
+      <mat-menu #sortMenu="matMenu" class="sort-menu">
+        <button mat-menu-item (click)="applySort('latest')">
+          <mat-icon>schedule</mat-icon>
+          <span>Latest First</span>
+          <mat-icon *ngIf="selectedSort === 'latest'" class="check">check</mat-icon>
+        </button>
+
+        <button mat-menu-item (click)="applySort('high')">
+          <mat-icon>trending_down</mat-icon>
+          <span>Amount: High to Low</span>
+          <mat-icon *ngIf="selectedSort === 'high'" class="check">check</mat-icon>
+        </button>
+
+        <button mat-menu-item (click)="applySort('low')">
+          <mat-icon>trending_up</mat-icon>
+          <span>Amount: Low to High</span>
+          <mat-icon *ngIf="selectedSort === 'low'" class="check">check</mat-icon>
+        </button>
+      </mat-menu>
+    </div>
+
+    
+<div class="sort-wrapper">
+  <button mat-button [matMenuTriggerFor]="categoryMenu" class="sort-btn action-btn">
+    <mat-icon>category</mat-icon>
+    {{ selectedCategory || 'All Categories' }}
     <mat-icon class="arrow">expand_more</mat-icon>
   </button>
 
-  <mat-menu #sortMenu="matMenu" class="sort-menu">
-
-    <button mat-menu-item (click)="applySort('latest')">
-      <mat-icon>schedule</mat-icon>
-      <span>Latest First</span>
-      <mat-icon *ngIf="selectedSort === 'latest'" class="check">check</mat-icon>
+  <mat-menu #categoryMenu="matMenu" class="sort-menu">
+    <button mat-menu-item (click)="filterByCategory('')">
+      <mat-icon>all_inclusive</mat-icon>
+      <span>All Categories</span>
+      <mat-icon *ngIf="selectedCategory === ''" class="check">check</mat-icon>
     </button>
-
-    <button mat-menu-item (click)="applySort('high')">
-      <mat-icon>trending_down</mat-icon>
-      <span>Amount: High to Low</span>
-      <mat-icon *ngIf="selectedSort === 'high'" class="check">check</mat-icon>
+    <button mat-menu-item *ngFor="let cat of categoryList" (click)="filterByCategory(cat)">
+      <span>{{ cat }}</span>
+      <mat-icon *ngIf="selectedCategory === cat" class="check">check</mat-icon>
     </button>
-
-    <button mat-menu-item (click)="applySort('low')">
-      <mat-icon>trending_up</mat-icon>
-      <span>Amount: Low to High</span>
-      <mat-icon *ngIf="selectedSort === 'low'" class="check">check</mat-icon>
-    </button>
-
   </mat-menu>
+</div>
+  </div>
+
+
+<!-- <button mat-raised-button color="accent" (click)="exportToExcel()">
+  <mat-icon>download</mat-icon>
+  Excel
+</button> -->
+
+ <div class="right-actions">
+    <button mat-raised-button color="warn" (click)="exportToPDF()">
+      <mat-icon>picture_as_pdf</mat-icon>
+      Download Expenses
+    </button>
+
+
+      <button class="ai-btn-solid action-btn" (click)="openAiSummary()">
+      <mat-icon>auto_awesome</mat-icon>
+      AI Summary
+    </button>
+  </div>
 
 </div>
-
-<!----AI Summary Button--->
-<button class="ai-btn-solid" (click)="openAiSummary()">
-  <span class="icon">✨</span>
-  AI Summary
-</button>
-</div>
-
 
   <!-- MAIN -->
   <div class="main-section">
@@ -111,7 +150,10 @@
     <!-- TABLE -->
     <mat-card class="table-card">
 
-      <h3>Recent Expenses</h3>
+      <div class="section-head">
+        <h3>Recent expenses</h3>
+        <span class="section-hint">This page</span>
+      </div>
 
       <table mat-table [dataSource]="tableDataSource" class="modern-table">
 
@@ -151,7 +193,7 @@
         <ng-container matColumnDef="notes">
           <th mat-header-cell *matHeaderCellDef>Notes</th>
           <td mat-cell *matCellDef="let e">
-            <button mat-button color="primary" (click)="openNotes(e.notes)">
+            <button mat-button class="cell-link" (click)="openNotes(e.notes)">
               View
             </button>
           </td>
@@ -161,9 +203,8 @@
         <ng-container matColumnDef="update">
           <th mat-header-cell *matHeaderCellDef>Update</th>
          <td mat-cell *matCellDef="let e">
-    <!---- <button mat-button color="green" (click)="openEditExpense(e, tableDataSource.indexOf(e))"> --->
-         <button mat-button color="green" (click)="openEditExpense(e, tableDataSource.data.indexOf(e))">      
-    Edit ✏️
+         <button mat-button class="cell-link edit-link" (click)="openEditExpense(e)">
+    Edit
   </button>
 </td>
         </ng-container>
@@ -172,11 +213,36 @@
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef>Delete</th>
           <td mat-cell *matCellDef="let e; let i = index">
-            <button mat-icon-button color="warn" (click)="openDeleteDialog(e)">
-             Delete 🗑️
+            <button mat-button class="cell-link delete-link" (click)="openDeleteDialog(e)">
+             Delete
             </button>
           </td>
         </ng-container>
+
+        <!-- VENDOR -->
+<ng-container matColumnDef="vendor">
+  <th mat-header-cell *matHeaderCellDef>Vendor</th>
+  <td mat-cell *matCellDef="let e">
+    {{ e.vendor || '-' }}
+  </td>
+</ng-container>
+
+
+        <!----Receipt---->
+         <ng-container matColumnDef="receipt">
+          <th mat-header-cell *matHeaderCellDef>Receipt</th>
+          <td mat-cell *matCellDef="let e">
+            <a *ngIf="e.receipt_url"
+               [href]="receiptHref(e.receipt_url)"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="cell-link edit-link">
+              View
+            </a>
+            <span *ngIf="!e.receipt_url" style="color:#ccc;">-</span>
+          </td>
+        </ng-container>
+
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
@@ -202,12 +268,25 @@
 
     </mat-card>
 
-    <!-- CHART -->
-    <div class="right">
-      <mat-card>
-        <h3>Expense Analysis</h3>
-        <div class="chart-container">
+    <div class="charts-stack">
+      <mat-card class="chart-card chart-card--analysis">
+        <div class="chart-card-header">
+          <h3>Expense analysis</h3>
+          <p class="chart-caption">Breakdown for the expenses shown in the table above. Inner ring: page spend vs remaining budget.</p>
+        </div>
+        <div class="chart-canvas-well donut-chart-wrap">
           <canvas id="expenseChart"></canvas>
+        </div>
+      </mat-card>
+
+      <mat-card class="chart-card chart-card--bars" *ngIf="spentBarVisible">
+        <div class="chart-card-header">
+          <h3>Budget vs spent</h3>
+          <p class="chart-caption" *ngIf="userBudget > 0">Each column is your equal budget share for that category: colored fill is spent (with % of share), light band is unused headroom, red cap if you exceeded the share.</p>
+          <p class="chart-caption muted" *ngIf="userBudget <= 0">Bars show total spent per category. Set a monthly budget to see spend vs an equal share per category.</p>
+        </div>
+        <div class="chart-canvas-well spent-bar-wrap">
+          <canvas id="spentByCategoryBar"></canvas>
         </div>
       </mat-card>
     </div>
@@ -238,9 +317,9 @@
 
     <button class="close-btn" (click)="closeDeleteDialog()">✖</button>
 
-    <h3>Delete Expensecd </h3>
+    <h3>Delete Expense</h3>
 
-    <p>Are you Sure?</p>
+    <p>Are you sure you want to delete this expense?</p>
 
     <div class="actions">
       <button mat-stroked-button (click)="closeDeleteDialog()">Cancel</button>

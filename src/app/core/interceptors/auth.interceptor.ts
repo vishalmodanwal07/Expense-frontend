@@ -21,7 +21,14 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(req.url.includes('/login') || req.url.includes('/signup')){
+    const u = req.url;
+    const isPublicAuth =
+      u.includes('/auth/login') ||
+      u.includes('/auth/signup') ||
+      u.includes('/auth/forgot-password') ||
+      u.includes('/auth/reset-password') ||
+      u.includes('/auth/refresh');
+    if (isPublicAuth) {
       return next.handle(req);
     }
     const token = localStorage.getItem('token');
@@ -43,6 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
         // 🔥 Handle unauthorized
         if (error.status === 401) {
           localStorage.removeItem('accessToken');
+          localStorage.removeItem('token');
 
           this.toastr.error('Session expired, please login again');
 

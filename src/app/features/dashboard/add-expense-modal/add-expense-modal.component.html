@@ -3,7 +3,30 @@
   <button class="close-btn" (click)="close()"> ✖ </button>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="submit()">
+<!-- RECEIPT SCANNER -->
+<div class="receipt-scanner">
+  <label for="receiptUpload" class="scan-btn">
+    <mat-icon>receipt_long</mat-icon>
+    Scan Receipt
+  </label>
+  <input 
+    type="file" 
+    id="receiptUpload" 
+    accept="image/*" 
+    style="display:none"
+    (change)="onReceiptUpload($event)"
+  >
+  <span *ngIf="scanning" class="scanning-text">
+    <mat-icon>hourglass_empty</mat-icon> Scanning...
+  </span>
+  <span *ngIf="scanned" class="scanned-text">
+    <mat-icon>check_circle</mat-icon> Receipt scanned!
+  </span>
+</div>
+
+
+
+<form [formGroup]="form" (ngSubmit)="submit(); $event.preventDefault()">
 
   <!-- TITLE -->
   <mat-form-field appearance="outline" class="full">
@@ -16,6 +39,12 @@
   <small *ngIf="submitted && f['title']?.errors?.['minlength']">
     Min 3 characters required
   </small>
+
+
+
+
+
+
 
   <!-- AMOUNT -->
   <mat-form-field appearance="outline" class="full">
@@ -32,6 +61,14 @@
     <input matInput type="date" formControlName="date">
   </mat-form-field>
 
+
+   <!-- VENDOR -->
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Vendor Name</mat-label>
+    <input matInput formControlName="vendor">
+  </mat-form-field>
+
+
   <!-- CATEGORY -->
   <!-- <mat-form-field appearance="outline" class="full">
     <mat-label>Category</mat-label>
@@ -44,6 +81,7 @@
     </mat-select>
   </mat-form-field> -->
 
+  
   <mat-form-field appearance="outline" class="full">
   <mat-label>Category</mat-label>
 
@@ -87,7 +125,7 @@
 
   <div class="actions">
     <button mat-stroked-button type="button" (click)="close()">Cancel</button>
-   <button mat-raised-button color="primary" type="submit">
+   <button mat-raised-button color="primary" type="button" (click)="submit()">
   {{ data ? 'Update' : 'Add Expense' }}
 </button>
   </div>

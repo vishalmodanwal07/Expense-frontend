@@ -1,0 +1,24 @@
+.expense-list-page {
+  min-height: calc(100vh - var(--nav-bar-offset) - env(safe-area-inset-top, 0px));
+  padding: 20px;
+}
+
+.expense-empty-card {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #dbe4f0;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.expense-empty-card h2 {
+  margin: 0 0 8px;
+  color: #0f172a;
+}
+
+.expense-empty-card p {
+  margin: 0;
+  color: #64748b;
+}

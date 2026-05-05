@@ -1,0 +1,91 @@
+<div class="profile-page">
+  <div class="profile-card" *ngIf="!loading; else loadingTpl">
+    <div class="profile-card-head">
+      <p class="profile-back">
+        <a [routerLink]="accountOverviewPath" class="profile-back-link">← Back to profile</a>
+      </p>
+      <h1>Edit profile</h1>
+      <p class="lead">
+        Update your name and mobile (required for adding expenses). Your email is your account ID and cannot be changed here.
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="profile-form">
+      <label class="field">
+        <span class="label">Username</span>
+        <input
+          type="text"
+          formControlName="name"
+          autocomplete="name"
+          placeholder="Your name"
+          [class.invalid]="form.get('name')?.touched && form.get('name')?.invalid"
+        />
+        <small *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['required']">
+          Name is required
+        </small>
+      </label>
+
+      <div class="field">
+        <span class="label">Email <span class="hint">(read-only)</span></span>
+        <div class="email-readonly" role="text" aria-readonly="true">{{ emailDisplay || '—' }}</div>
+      </div>
+
+      <label class="field">
+        <span class="label">Mobile number</span>
+        <input
+          type="tel"
+          formControlName="mobile"
+          autocomplete="tel"
+          placeholder="10 digits, optional +91"
+          [class.invalid]="form.get('mobile')?.touched && form.get('mobile')?.invalid"
+        />
+        <small *ngIf="form.get('mobile')?.touched && form.get('mobile')?.errors?.['required']">
+          Mobile is required to record expenses
+        </small>
+        <small *ngIf="form.get('mobile')?.touched && form.get('mobile')?.errors?.['indianMobile']">
+          Enter a valid Indian mobile (starts with 6–9)
+        </small>
+      </label>
+
+      <div class="password-section">
+        <h2 class="section-title">Change password</h2>
+        <p class="section-hint">Leave blank to keep your current password.</p>
+
+        <label class="field">
+          <span class="label">New password</span>
+          <input
+            type="password"
+            formControlName="newPassword"
+            autocomplete="new-password"
+            placeholder="At least 6 characters"
+          />
+        </label>
+
+        <label class="field">
+          <span class="label">Confirm new password</span>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Repeat new password"
+          />
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn ghost" (click)="cancel()" [disabled]="saving">
+          Cancel
+        </button>
+        <button type="submit" class="btn primary" [disabled]="saving || form.get('name')?.invalid || form.get('mobile')?.invalid">
+          {{ saving ? 'Saving…' : 'Save changes' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="profile-card loading-card">
+      <p class="loading-text">Loading your profile…</p>
+    </div>
+  </ng-template>
+</div>

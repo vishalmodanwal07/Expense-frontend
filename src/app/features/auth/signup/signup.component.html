@@ -6,11 +6,10 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <!-- Name -->
       <div class="form-group">
-        <input 
-          type="text" 
-          placeholder="Full Name" 
+        <input
+          type="text"
+          placeholder="Full Name"
           formControlName="name"
           [class.invalid]="(submitted || f['name']?.touched) && f['name']?.invalid"
         />
@@ -19,27 +18,107 @@
         </small>
       </div>
 
-      <!-- Email -->
-      <div class="form-group">
-        <input 
-          type="email" 
-          placeholder="Email Address" 
-          formControlName="email"
-          [class.invalid]="(submitted || f['email']?.touched) && f['email']?.invalid"
-        />
+      <div class="form-group verify-block">
+        <div class="field-with-btn">
+          <input
+            type="email"
+            placeholder="Email Address"
+            formControlName="email"
+            [class.invalid]="(submitted || f['email']?.touched) && f['email']?.invalid"
+          />
+          <button
+            type="button"
+            class="btn-verify"
+            (click)="sendEmailOtp()"
+            [disabled]="emailOtpSending || emailVerified || f['email']?.invalid"
+          >
+            {{ emailVerified ? 'Verified' : (emailOtpSending ? 'Sending…' : 'Verify') }}
+          </button>
+        </div>
         <small *ngIf="(submitted || f['email']?.touched) && f['email']?.errors?.['required']">
           Email is required
         </small>
         <small *ngIf="(submitted || f['email']?.touched) && f['email']?.errors?.['email']">
           Enter a valid email
         </small>
+        <p class="verify-hint" *ngIf="emailOtpPanelOpen && !emailVerified">
+          Check your inbox, enter the 6-digit code, then tap Done.
+        </p>
+        <div class="otp-row" *ngIf="emailOtpPanelOpen && !emailVerified">
+          <input
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="one-time-code"
+            placeholder="OTP"
+            formControlName="emailOtp"
+            class="otp-input"
+          />
+          <button
+            type="button"
+            class="btn-done"
+            (click)="verifyEmailOtpDone()"
+            [disabled]="emailOtpVerifying"
+          >
+            {{ emailOtpVerifying ? '…' : 'Done' }}
+          </button>
+        </div>
+        <p class="badge-verified" *ngIf="emailVerified">✓ Email verified</p>
       </div>
 
-      <!-- Password -->
+      <div class="form-group verify-block">
+        <div class="field-with-btn">
+          <input
+            type="tel"
+            placeholder="Mobile number (10 digits, optional +91)"
+            formControlName="mobile"
+            autocomplete="tel"
+            [class.invalid]="(submitted || f['mobile']?.touched) && f['mobile']?.invalid"
+          />
+          <button
+            type="button"
+            class="btn-verify"
+            (click)="sendMobileOtp()"
+            [disabled]="mobileOtpSending || mobileVerified || f['mobile']?.invalid || !emailVerified"
+          >
+            {{ mobileVerified ? 'Verified' : (mobileOtpSending ? 'Sending…' : 'Verify') }}
+          </button>
+        </div>
+        <small *ngIf="(submitted || f['mobile']?.touched) && f['mobile']?.errors?.['required']">
+          Mobile number is required
+        </small>
+        <small *ngIf="(submitted || f['mobile']?.touched) && f['mobile']?.errors?.['indianMobile']">
+          Enter a valid Indian mobile (starts with 6–9)
+        </small>
+        <p class="verify-hint muted" *ngIf="emailVerified && !mobileVerified">
+          Mobile code is sent to your email (SMS is not used on this server).
+        </p>
+        <div class="otp-row" *ngIf="mobileOtpPanelOpen && !mobileVerified">
+          <input
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="one-time-code"
+            placeholder="OTP"
+            formControlName="mobileOtp"
+            class="otp-input"
+          />
+          <button
+            type="button"
+            class="btn-done"
+            (click)="verifyMobileOtpDone()"
+            [disabled]="mobileOtpVerifying"
+          >
+            {{ mobileOtpVerifying ? '…' : 'Done' }}
+          </button>
+        </div>
+        <p class="badge-verified" *ngIf="mobileVerified">✓ Mobile verified</p>
+      </div>
+
       <div class="form-group">
-        <input 
-          type="password" 
-          placeholder="Password" 
+        <input
+          type="password"
+          placeholder="Password"
           formControlName="password"
           [class.invalid]="(submitted || f['password']?.touched) && f['password']?.invalid"
         />
@@ -51,11 +130,10 @@
         </small>
       </div>
 
-      <!-- Confirm Password -->
       <div class="form-group">
-        <input 
-          type="password" 
-          placeholder="Confirm Password" 
+        <input
+          type="password"
+          placeholder="Confirm Password"
           formControlName="confirmPassword"
           [class.invalid]="(submitted || f['confirmPassword']?.touched) && f['confirmPassword']?.invalid"
         />
@@ -64,18 +142,19 @@
         </small>
       </div>
 
-      <!-- Match Error -->
       <small class="error" *ngIf="(submitted || form.touched) && form?.errors?.['mismatch']">
         Passwords do not match
       </small>
 
-      <!-- Submit -->
-      <button type="submit" class="primary" [disabled]="loading">
+      <button
+        type="submit"
+        class="primary"
+        [disabled]="loading || !emailVerified || !mobileVerified"
+      >
         <span *ngIf="loading">Creating account...</span>
         <span *ngIf="!loading">Signup</span>
       </button>
 
-      <!-- Footer -->
       <p class="switch">
         Already have an account?
         <a routerLink="/login">Login</a>

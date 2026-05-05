@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BudgetService } from 'src/app/core/services/budget.service';
 
 @Component({
@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private toastr: ToastrService,
     private router: Router,
-    private budgetService : BudgetService
+    private route: ActivatedRoute,
+    private budgetService: BudgetService
   ) {}
 
   ngOnInit(): void {
@@ -52,32 +53,63 @@ export class LoginComponent implements OnInit {
       if (loginRes?.accessToken) {
         localStorage.setItem('token', loginRes.accessToken);
       }
-       if (loginRes?.userdetails.id) {
+       if (loginRes?.userdetails?.id) {
         localStorage.setItem('userId', JSON.stringify(loginRes.userdetails.id));
-        console.log(localStorage.getItem("userId"));
+      }
+      const ud = loginRes?.userdetails;
+      const role = (ud?.role || 'user').toString().toLowerCase();
+      if (ud?.name != null && ud?.email != null) {
+        localStorage.setItem(
+          'userProfile',
+          JSON.stringify({
+            name: ud.name,
+            email: ud.email,
+            mobile: ud.mobile ?? '',
+            role
+          })
+        );
       }
 
-      // 🔥 NOW CHECK BUDGET
+      const goDashboard = () => {
+        this.router.navigate(['/dashboard']);
+        this.toastr.success('Login successful 🎉');
+        this.loading = false;
+      };
+
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+      if (
+        returnUrl &&
+        returnUrl.startsWith('/') &&
+        !returnUrl.startsWith('//') &&
+        !returnUrl.includes('://')
+      ) {
+        this.router.navigateByUrl(returnUrl);
+        this.toastr.success('Login successful 🎉');
+        this.loading = false;
+        return;
+      }
+
+      if (role === 'admin') {
+        goDashboard();
+        return;
+      }
+
       this.budgetService.getCurrentBudget().subscribe({
         next: (budgetRes: any) => {
-
           if (budgetRes && budgetRes.amount_limit) {
-            this.router.navigate(['/dashboard']);
+            goDashboard();
           } else {
             this.router.navigate(['/budget']);
+            this.toastr.success('Login successful 🎉');
+            this.loading = false;
           }
-
-          this.toastr.success('Login successful 🎉');
-          this.loading = false;
         },
-
         error: () => {
-          // fallback → new user
           this.router.navigate(['/budget']);
+          this.toastr.success('Login successful 🎉');
           this.loading = false;
         }
       });
-
     },
 
     error: (err) => {

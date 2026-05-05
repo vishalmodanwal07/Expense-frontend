@@ -1,59 +1,51 @@
-<div class="auth-page">
-  <div>
-      <h3>Welcome, login for see your Dashboard</h3>
-  </div>
+<div class="auth-page spendee-login">
   <div class="auth-card">
+    <h1 class="auth-title">Login to ExpenseTracker</h1>
+    <p class="auth-lead">
+      Don't have an account yet?
+      <a routerLink="/signup" class="link-accent">Sign up here!</a>
+    </p>
 
-    <h2>Welcome Back 👋</h2>
-    <p class="subtitle">Login to continue tracking your expenses</p>
-
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-      <!-- Email -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <input 
-          type="email" 
-          placeholder="Email Address" 
+        <label class="field-label" for="login-email">E-mail address</label>
+        <input
+          id="login-email"
+          type="email"
+          placeholder="E-mail address"
           formControlName="email"
           [class.invalid]="(submitted || f['email']?.touched) && f['email']?.invalid"
         />
-
         <small *ngIf="(submitted || f['email']?.touched) && f['email']?.errors?.['required']">
           Email is required
         </small>
-
         <small *ngIf="(submitted || f['email']?.touched) && f['email']?.errors?.['email']">
           Enter a valid email
         </small>
       </div>
 
-      <!-- Password -->
       <div class="form-group">
-        <input 
-          type="password" 
-          placeholder="Password" 
+        <label class="field-label" for="login-password">Password</label>
+        <input
+          id="login-password"
+          type="password"
+          placeholder="Password"
           formControlName="password"
           [class.invalid]="(submitted || f['password']?.touched) && f['password']?.invalid"
         />
-
         <small *ngIf="(submitted || f['password']?.touched) && f['password']?.errors?.['required']">
           Password is required
         </small>
       </div>
 
-      <!-- Submit -->
-      <button type="submit" class="primary" [disabled]="loading">
-        <span *ngIf="loading">Logging in...</span>
-        <span *ngIf="!loading">Login</span>
-      </button>
-
-      <!-- Footer -->
-      <p class="switch">
-        Don’t have an account?
-        <a routerLink="/signup">Signup</a>
+      <p class="forgot-row">
+        <a routerLink="/forgot-password" class="link-accent">Forgot password?</a>
       </p>
 
+      <button type="submit" class="btn-login" [disabled]="loading">
+        <span *ngIf="loading">Logging in…</span>
+        <span *ngIf="!loading">Login to ExpenseTracker</span>
+      </button>
     </form>
-
   </div>
 </div>

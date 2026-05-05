@@ -16,4 +16,9 @@ export class LandingComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /** Hide hero sign-up CTAs when already authenticated. */
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
 }

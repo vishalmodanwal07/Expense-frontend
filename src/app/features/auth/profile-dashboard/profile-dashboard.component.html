@@ -1,0 +1,28 @@
+<section class="pd-wrap">
+  <div class="pd-card" *ngIf="!loading">
+    <p class="pd-eyebrow">Your account</p>
+    <h1>Profile</h1>
+    <p class="pd-lead">
+      Signed in as <strong>{{ nameDisplay || '—' }}</strong>. Open your expense dashboard or update account details.
+    </p>
+
+    <dl class="pd-details">
+      <div>
+        <dt>Email</dt>
+        <dd>{{ emailDisplay || '—' }}</dd>
+      </div>
+      <div>
+        <dt>Mobile</dt>
+        <dd>{{ mobileDisplay || '—' }}</dd>
+      </div>
+    </dl>
+
+    <div class="pd-actions">
+      <button type="button" class="btn primary" (click)="goExpenseDashboard()">Expense dashboard</button>
+      <button type="button" class="btn ghost" (click)="goEditAccount()">Edit account details</button>
+      <button *ngIf="isAdmin" type="button" class="btn ghost" (click)="goAdminOverview()">Admin overview</button>
+    </div>
+  </div>
+
+  <p *ngIf="loading" class="pd-loading">Loading…</p>
+</section>

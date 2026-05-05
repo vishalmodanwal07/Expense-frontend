@@ -1,92 +1,177 @@
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-card">
-    <h1>
-      Take Control of Your Expense 
-      <span class="highlight">Smartly</span> 💰
-    </h1>
-
-    <h3>
-      Track your daily spending, manage budgets,<br>
-      and gain full control of your finances — all in one simple <br>
-      and powerful dashboard.
-    </h3>
-
-    <div class="buttons">
-      <button routerLink="/signup" class="primary">
-        Get Started
-      </button>
+<div class="landing-page">
+  <!-- Hero -->
+  <header class="hero" aria-labelledby="landing-hero-title">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">Personal finance, simplified</p>
+        <h1 id="landing-hero-title">
+          Take control of your expenses
+          <span class="highlight">with clarity</span>
+        </h1>
+        <p class="hero-lead">
+          Track daily spending, set monthly budgets, and see trends in one
+          dashboard—so you can decide faster and stress less.
+        </p>
+        <div class="hero-actions" *ngIf="!isLoggedIn()">
+          <a routerLink="/signup" class="btn btn-primary">Get started</a>
+          <a routerLink="/login" class="btn btn-ghost">Sign in</a>
+        </div>
+        <ul class="hero-trust" aria-label="Highlights">
+          <li>No card required to explore</li>
+          <li>Built for everyday budgets</li>
+        </ul>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual-ring"></div>
+        <div class="hero-lottie-wrap">
+          <ng-lottie [options]="options"></ng-lottie>
+        </div>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <div class="hero-animation">
-    <ng-lottie [options]="options"></ng-lottie>
-  </div>
+  <!-- About -->
+  <section class="about section" aria-labelledby="about-title">
+    <div class="section-inner">
+      <div class="section-head">
+        <span class="section-label">Why ExpenseTracker</span>
+        <h2 id="about-title">Know where your money goes</h2>
+        <p class="section-deck">
+          A focused tool for logging expenses, respecting monthly limits, and
+          spotting patterns—without spreadsheet fatigue.
+        </p>
+      </div>
+      <div class="about-grid">
+        <div class="about-copy">
+          <p>
+            Organize spending by category, compare against your budget share,
+            and keep notes when you need context later.
+          </p>
+          <p>
+            Whether you are tightening up or just curious, the workflow stays
+            lightweight so the habit actually sticks.
+          </p>
+        </div>
+        <ul class="about-pills" aria-label="Product pillars">
+          <li>
+            <span class="pill-title">Budgets that flex</span>
+            <span class="pill-desc">Set a monthly cap and see headroom at a glance.</span>
+          </li>
+          <li>
+            <span class="pill-title">Category clarity</span>
+            <span class="pill-desc">Tag expenses and review charts when you want depth.</span>
+          </li>
+          <li>
+            <span class="pill-title">Your data, your account</span>
+            <span class="pill-desc">Sign in securely; your ledger stays tied to you.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features section section--band" aria-labelledby="features-title">
+    <div class="section-inner">
+      <div class="section-head">
+        <span class="section-label">Capabilities</span>
+        <h2 id="features-title">Everything you need to stay on track</h2>
+        <p class="section-deck">
+          Thoughtful defaults and a clean UI so you spend less time in the app
+          and more time making decisions.
+        </p>
+      </div>
+      <ul class="feature-grid">
+        <li class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="12" width="4" height="8" rx="1" />
+              <rect x="10" y="8" width="4" height="12" rx="1" />
+              <rect x="17" y="4" width="4" height="16" rx="1" />
+            </svg>
+          </div>
+          <h3>Smart dashboard</h3>
+          <p>
+            Totals, category mix, and budget vs spent—presented so the story of
+            the month is obvious in seconds.
+          </p>
+        </li>
+        <li class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <h3>Secure &amp; reliable</h3>
+          <p>
+            Authentication-backed access and solid engineering practices so
+            your records stay private and available when you need them.
+          </p>
+        </li>
+        <li class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+          </div>
+          <h3>Fast day-to-day use</h3>
+          <p>
+            Add entries quickly, paginate through history, and filter without
+            waiting—optimized for real routines, not demos.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how section" aria-labelledby="how-title">
+    <div class="section-inner">
+      <div class="section-head">
+        <span class="section-label">Flow</span>
+        <h2 id="how-title">How it works</h2>
+        <p class="section-deck">
+          Four short steps from signup to better awareness—no training manual
+          required.
+        </p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">1</span>
+          <h3>Create account</h3>
+          <p>Register in a minute and land on your personal workspace.</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">2</span>
+          <h3>Add expenses</h3>
+          <p>Log amounts, categories, and optional notes as you go.</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">3</span>
+          <h3>Analyze</h3>
+          <p>Use summaries and charts to see habits, not just totals.</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">4</span>
+          <h3>Improve</h3>
+          <p>Adjust your budget and behavior with evidence, not guesswork.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="cta-band" aria-labelledby="cta-title">
+    <div class="cta-inner">
+      <div class="cta-copy">
+        <h2 id="cta-title">Start in under a minute</h2>
+        <p>Create an account, set your monthly budget, and add your first expense.</p>
+      </div>
+      <div class="cta-actions">
+        <a routerLink="/signup" class="btn btn-primary btn-lg">Create free account</a>
+        <a routerLink="/login" class="btn btn-on-dark">I already have an account</a>
+      </div>
+    </div>
+  </section>
 </div>
-
-<!-- ABOUT -->
-<section class="about">
-  <h2>About Expense Tracker</h2>
-  <div class="container">
-    <p>
-      This platform helps you manage your finances in a simple and intuitive way. 
-      Track expenses, control budgets, and gain insights into your spending.
-    </p>
-    <p>
-      Built for speed, security, and ease of use — so you can focus on growing your savings.
-    </p>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features">
-  <h2>Key Features</h2>
-
-  <div class="card-container">
-    <div class="card">
-      <h3>📊 Smart Dashboard</h3>
-      <p>View all your financial data in one clean and interactive dashboard.</p>
-    </div>
-
-    <div class="card">
-      <h3>🔒 Secure & Reliable</h3>
-      <p>Your data is protected using modern security standards.</p>
-    </div>
-
-    <div class="card">
-      <h3>⚡ Fast Performance</h3>
-      <p>Experience smooth and fast performance across all devices.</p>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how">
-  <h2>How It Works</h2>
-
-  <div class="steps">
-    <div class="step">
-      <span>1</span>
-      <h3>Create Account</h3>
-      <p>Sign up and access your dashboard.</p>
-    </div>
-
-    <div class="step">
-      <span>2</span>
-      <h3>Add Expenses</h3>
-      <p>Start tracking your daily spending.</p>
-    </div>
-
-    <div class="step">
-      <span>3</span>
-      <h3>Analyze</h3>
-      <p>Understand your financial habits.</p>
-    </div>
-
-    <div class="step">
-      <span>4</span>
-      <h3>Improve</h3>
-      <p>Make smarter financial decisions.</p>
-    </div>
-  </div>
-</section>

@@ -8,13 +8,22 @@ import { DashboardComponent } from './features/dashboard/dashboard/dashboard.com
 import { AuthGuard } from './core/guards/auth.guard';
 import { BudgetGuard } from './core/guards/budget.guard';
 import { BudgetComponent } from './features/budget/budget.component';
+import { ProfileComponent } from './features/auth/profile/profile.component';
+import { ProfileDashboardComponent } from './features/auth/profile-dashboard/profile-dashboard.component';
+import { AdminProfileComponent } from './features/auth/admin-profile/admin-profile.component';
+import { AdminProfileGuard } from './core/guards/admin-profile.guard';
+import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './features/auth/reset-password/reset-password.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'landing', pathMatch: 'full' },
+  { path: '', pathMatch: 'full', redirectTo: 'landing' },
+
+  { path: 'landing', component: LandingComponent },
 
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  {path: '' , component: LandingComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
 // { path: 'dashboard/page/:page', component: DashboardComponent },
 { 
   path: 'dashboard/page/:page', 
@@ -32,6 +41,21 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard ]  
+  },
+  {
+    path: 'profile/edit',
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileDashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin-profile',
+    component: AdminProfileComponent,
+    canActivate: [AuthGuard, AdminProfileGuard]
   },
 
   { path: '**', redirectTo: 'landing' }

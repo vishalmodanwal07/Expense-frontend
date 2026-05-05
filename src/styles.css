@@ -1,63 +1,258 @@
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Satisfy&family=Space+Grotesk:wght@300..700&display=swap');
-.google-sans-<uniquifier> {
-  font-family: "Google Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: <weight>;
-  font-style: normal;
-  font-variation-settings:
-    "GRAD" 0;
-}
-body{
-     margin: 0;
-    height: 100%;
-  background-image: linear-gradient(-225deg, #FFFEFF 0%, #D7FFFE 100%);
-   font-family: "Google Sans", sans-serif;
-}
-html {
-   height: 100%;
-   }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-.container {
-  padding: 15px;
+:root {
+  /* Fixed navbar height (see navbar.component.css); used by full-height pages */
+  --nav-bar-offset: 56px;
+  --bg: #f6f8fc;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-soft: #f4f7ff;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --primary: #2563eb;
+  --primary-strong: #1d4ed8;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --border: #e5e7eb;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.06);
+  --section-band: linear-gradient(180deg, #eef4ff 0%, #e6eeff 100%);
 }
 
-html, body {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
   height: 100%;
   margin: 0;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #f7f9fd 0%, #eef4ff 100%);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body.dark-theme {
+  --bg: #0b1220;
+  --surface: #111a2e;
+  --surface-muted: #0f172a;
+  --surface-soft: #1a2740;
+  --text: #e5e7eb;
+  --text-muted: #94a3b8;
+  --primary: #3b82f6;
+  --primary-strong: #2563eb;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --border: #22314f;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.28);
+  --section-band: linear-gradient(180deg, #101827 0%, #0d1526 100%);
+  background: linear-gradient(180deg, #08101e 0%, #0d172b 100%);
+}
+
+/* ----- Angular Material (dark) — table, paginator, cards ----- */
+body.dark-theme mat-card.mat-card,
+body.dark-theme .mat-card {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+body.dark-theme table.mat-table,
+body.dark-theme .mat-table {
+  background: var(--surface) !important;
+}
+
+body.dark-theme tr.mat-header-row {
+  background: var(--surface-soft) !important;
+}
+
+body.dark-theme th.mat-header-cell {
+  color: var(--text-muted) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+body.dark-theme tr.mat-row {
+  background: var(--surface) !important;
+}
+
+body.dark-theme td.mat-cell {
+  color: var(--text) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+body.dark-theme tr.mat-row:hover {
+  background: var(--surface-soft) !important;
+}
+
+body.dark-theme .mat-paginator {
+  background: var(--surface) !important;
+  color: var(--text-muted) !important;
+  border-top: 1px solid var(--border);
+}
+
+body.dark-theme .mat-paginator .mat-select-value,
+body.dark-theme .mat-paginator .mat-select-arrow {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .mat-paginator-page-size-label,
+body.dark-theme .mat-paginator-range-label {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--border);
+}
+
+body.dark-theme .mat-form-field-label,
+body.dark-theme .mat-input-element {
+  color: var(--text);
+}
+
+/* ----- Auth + budget cards ----- */
+body.dark-theme .auth-page:not(.spendee-login) .auth-card {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+body.dark-theme .auth-page:not(.spendee-login) .auth-card h2,
+body.dark-theme .auth-card .auth-title {
+  color: var(--text) !important;
+}
+
+body.dark-theme .auth-page:not(.spendee-login) .auth-card .subtitle,
+body.dark-theme .auth-page:not(.spendee-login) .subtitle,
+body.dark-theme .auth-card .auth-lead,
+body.dark-theme .auth-page .auth-lead {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .auth-page:not(.spendee-login) .auth-card input {
+  background: var(--surface-muted) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark-theme .auth-page:not(.spendee-login) .auth-card .switch {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .budget-card.mat-card {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+body.dark-theme .budget-card .subtitle {
+  color: var(--text-muted) !important;
+}
+
+/* ----- Footer ----- */
+body.dark-theme .app-footer {
+  background: #070b14;
+  color: var(--text-muted);
+  border-top-color: var(--border);
+}
+
+body.dark-theme .app-footer .footer-link {
+  color: #cbd5e1;
+}
+
+body.dark-theme .app-footer .footer-link:hover {
+  color: #fff;
+}
+
+.container {
+  width: min(1120px, 92%);
+  margin: 0 auto;
 }
 
 .app-container {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;   /* full screen */
 }
 
 .content {
-  flex: 1;  /* 🔥 pushes footer down */
-  padding-top: 70px; /* navbar space */
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  /* Matches fixed navbar: 56px row + safe-area inset (see navbar.component.css) */
+  padding-top: calc(56px + env(safe-area-inset-top, 0px));
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 769px) {
+  :root {
+    --nav-bar-offset: 64px;
+  }
+
+  .content {
+    padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
 }
 
 button {
   cursor: pointer;
+  font-family: inherit;
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding: 30px;
-  }
+/* Angular Material 13: legacy `mat-dialog-container` (not MDC). Support both. */
+.mat-dialog-container.custom-dialog,
+.mat-mdc-dialog-container.custom-dialog {
+  border-radius: 16px;
+  box-sizing: border-box !important;
+  max-height: 90vh !important;
+  max-width: calc(100vw - 24px) !important;
+  margin: 12px auto !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-.custom-dialog .mat-mdc-dialog-container {
-  backdrop-filter: blur(10px);
+
+.mat-dialog-container.custom-dialog.expense-dialog-panel,
+.mat-mdc-dialog-container.custom-dialog.expense-dialog-panel {
+  width: min(560px, calc(100vw - 24px)) !important;
+  max-width: min(560px, calc(100vw - 24px)) !important;
+  padding: 16px 18px 20px !important;
+}
+
+.mat-dialog-container.custom-dialog.ai-summary-dialog-panel,
+.mat-mdc-dialog-container.custom-dialog.ai-summary-dialog-panel {
+  width: min(520px, calc(100vw - 24px)) !important;
+  max-width: min(520px, calc(100vw - 24px)) !important;
+  padding: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .mat-dialog-container.custom-dialog.expense-dialog-panel,
+  .mat-mdc-dialog-container.custom-dialog.expense-dialog-panel,
+  .mat-dialog-container.custom-dialog.ai-summary-dialog-panel,
+  .mat-mdc-dialog-container.custom-dialog.ai-summary-dialog-panel {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
 }
 
 .cdk-overlay-backdrop {
-  backdrop-filter: blur(6px);
-  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  background: rgba(2, 6, 23, 0.35);
 }

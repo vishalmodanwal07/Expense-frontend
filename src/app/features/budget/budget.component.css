@@ -1,30 +1,29 @@
 .budget-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  min-height: calc(100vh - var(--nav-bar-offset) - env(safe-area-inset-top, 0px));
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
 }
 
 .budget-card {
-  width: 400px;
-  padding: 25px;
-  border-radius: 15px;
+  width: min(460px, 100%);
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid #dbe4f0;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+}
+
+.budget-card h2 {
+  margin: 0 0 6px;
+  color: #0f172a;
 }
 
 .subtitle {
-  margin-bottom: 20px;
-  color: gray;
+  margin: 0 0 18px;
+  color: #64748b;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 15px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .budget-card {
-    width: 100%;
-  }
+  margin-bottom: 10px;
 }
